@@ -74,8 +74,8 @@ const CreatePollPage = () => {
 
       alert("Poll created successfully!");
       router.push(`/polls/${poll.id}`); // Redirect to the newly created poll page
-    } catch (err: any) {
-      setError("An unexpected error occurred: " + err.message);
+    } catch (err: any) { // Corrected Line
+      setError("An unexpected error occurred: " + (err as Error).message);
     } finally {
       setLoading(false);
     }

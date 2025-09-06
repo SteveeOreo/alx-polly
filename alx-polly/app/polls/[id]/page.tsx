@@ -62,8 +62,8 @@ export default function PollViewPage({ params }: { params: { id: string } }) {
         setOptions(optionsData || []);
       } catch (err: any) {
         setError(err.message || "Failed to fetch poll.");
-        console.error("Error fetching poll data:", err);
-      } finally {
+        console.error("Error fetching poll data:", (err as Error).message);
+      } finally {\
         setLoading(false);
       }
     }

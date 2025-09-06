@@ -47,7 +47,7 @@ const RegisterPage = () => {
         router.push("/auth/login");
       }
     } catch (err: any) {
-      setError("An unexpected error occurred: " + err.message);
+      setError("An unexpected error occurred: " + (err as Error).message);
     } finally {
       setLoading(false);
     }
