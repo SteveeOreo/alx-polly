@@ -1,7 +1,5 @@
 "use client";
 
-"use client";
-
 import type { PageProps } from "next";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -151,3 +149,5 @@ const PollViewPage = ({ params }: PageProps<{ id: string }>) => {
     </div>
   );
 };
+
+export default PollViewPage;
