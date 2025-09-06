@@ -22,12 +22,11 @@ interface Option {
   text: string;
   votes: number;
   created_at?: string;
-};
 }
 
 // ✅ Use async function with params typed
 const PollViewPage = ({ params }: PageProps<{ id: string }>) => {
-const { id } = params;
+  const { id } = params;
   const [poll, setPoll] = useState<Poll | null>(null);
   const [options, setOptions] = useState<Option[]>([]);
   const [loading, setLoading] = useState(true);
