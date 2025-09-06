@@ -63,7 +63,7 @@ export default function PollViewPage({ params }: { params: { id: string } }) {
       } catch (err: any) {
         setError(err.message || "Failed to fetch poll.");
         console.error("Error fetching poll data:", (err as Error).message);
-      } finally {\
+      } finally {
         setLoading(false);
       }
     }
