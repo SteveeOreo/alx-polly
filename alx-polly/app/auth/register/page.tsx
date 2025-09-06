@@ -1,7 +1,7 @@
 "use client"; // This is a client component
 
 import React, { useState } from "react";
-import { supabase } from "../../lib/supabase"; // Adjust path if necessary
+import { supabase } from "@/lib/supabase"; // Adjust path if necessary
 import { useRouter } from "next/navigation";
 
 const RegisterPage = () => {

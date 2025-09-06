@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "../../../lib/supabase"; // Adjust path as necessary
+import { supabase } from "@/lib/supabase";
 
 const CreatePollPage = () => {
   const [pollTitle, setPollTitle] = useState("");
