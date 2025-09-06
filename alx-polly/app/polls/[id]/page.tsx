@@ -21,9 +21,13 @@ interface Option {
   created_at?: string;
 }
 
-// ✅ Use async function with params typed
-const PollViewPage = ({ params }: { params: { id: string } }) => {
-  const { id } = params;
+export default function PollViewPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const { id } = params; // ✅ no `await`
+
   const [poll, setPoll] = useState<Poll | null>(null);
   const [options, setOptions] = useState<Option[]>([]);
   const [loading, setLoading] = useState(true);
@@ -56,7 +60,6 @@ const PollViewPage = ({ params }: { params: { id: string } }) => {
         setOptions(optionsData || []);
       } catch (err: any) {
         setError(err.message || "Failed to fetch poll.");
-        console.error("Error fetching poll data:", err.message);
       } finally {
         setLoading(false);
       }
@@ -65,53 +68,9 @@ const PollViewPage = ({ params }: { params: { id: string } }) => {
     if (id) fetchPollData();
   }, [id]);
 
-  if (loading) {
-    return (
-      <div className="container mx-auto py-8">
-        <Card>
-          <CardContent>
-            <p>Loading poll details...</p>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="container mx-auto py-8">
-        <Card>
-          <CardContent>
-            <p className="text-red-500">Error: {error}</p>
-            <button
-              onClick={() => router.push("/polls")}
-              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
-            >
-              Back to Polls
-            </button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  if (!poll) {
-    return (
-      <div className="container mx-auto py-8">
-        <Card>
-          <CardContent>
-            <p>Poll not found.</p>
-            <button
-              onClick={() => router.push("/polls")}
-              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
-            >
-              Back to Polls
-            </button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p className="text-red-500">Error: {error}</p>;
+  if (!poll) return <p>Poll not found.</p>;
 
   return (
     <div className="container mx-auto py-8">
@@ -147,6 +106,4 @@ const PollViewPage = ({ params }: { params: { id: string } }) => {
       </Card>
     </div>
   );
-};
-
-export default PollViewPage;
+}
