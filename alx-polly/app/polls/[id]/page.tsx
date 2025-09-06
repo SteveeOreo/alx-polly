@@ -1,16 +1,10 @@
 "use client";
 
-import React, { useEffect, useState, FC } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "../../../lib/supabase"; // Adjust path as necessary
+import { supabase } from "../../../lib/supabase";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-
-interface PollPageProps {
-  params: {
-    id: string;
-  };
-}
 
 interface Poll {
   id: string;
@@ -24,10 +18,15 @@ interface Option {
   poll_id: string;
   text: string;
   votes: number;
-  created_at?: string; // optional, if it exists
+  created_at?: string;
 }
 
-const PollViewPage: FC<PollPageProps> = ({ params }) => {
+// ✅ Use async function with params typed
+export default function PollViewPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const { id } = params;
   const [poll, setPoll] = useState<Poll | null>(null);
   const [options, setOptions] = useState<Option[]>([]);
@@ -41,7 +40,6 @@ const PollViewPage: FC<PollPageProps> = ({ params }) => {
       setError(null);
 
       try {
-        // Fetch poll details
         const { data: pollData, error: pollError } = await supabase
           .from("polls")
           .select("*")
@@ -52,12 +50,11 @@ const PollViewPage: FC<PollPageProps> = ({ params }) => {
         if (!pollData) throw new Error("Poll not found.");
         setPoll(pollData);
 
-        // Fetch options
         const { data: optionsData, error: optionsError } = await supabase
           .from("options")
           .select("*")
           .eq("poll_id", id)
-          .order("created_at", { ascending: true }); // only works if column exists
+          .order("created_at", { ascending: true });
 
         if (optionsError) throw new Error(optionsError.message);
         setOptions(optionsData || []);
@@ -69,9 +66,7 @@ const PollViewPage: FC<PollPageProps> = ({ params }) => {
       }
     }
 
-    if (id) {
-      fetchPollData();
-    }
+    if (id) fetchPollData();
   }, [id]);
 
   if (loading) {
@@ -156,6 +151,4 @@ const PollViewPage: FC<PollPageProps> = ({ params }) => {
       </Card>
     </div>
   );
-};
-
-export default PollViewPage;
+}
