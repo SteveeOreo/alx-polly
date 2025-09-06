@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, FC } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../../lib/supabase"; // Adjust path as necessary
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -120,12 +120,12 @@ const PollViewPage: FC<PollPageProps> = ({ params }) => {
               Back to Polls
             </button>
           </CardContent>
-              </Card>
-            </div>
-          );
-        };
+        </Card>
+      </div>
+    );
+  }
 
-        export default PollViewPage;
+  export default PollViewPage;
 
   return (
     <div className="container mx-auto py-8">
@@ -162,4 +162,4 @@ const PollViewPage: FC<PollPageProps> = ({ params }) => {
       </Card>
     </div>
   );
-}
+};
