@@ -22,6 +22,7 @@ interface Option {
   poll_id: string;
   text: string;
   votes: number;
+  created_at?: string; // optional, if it exists
 }
 
 const PollViewPage: FC<PollPageProps> = ({ params }) => {
@@ -45,28 +46,22 @@ const PollViewPage: FC<PollPageProps> = ({ params }) => {
           .eq("id", id)
           .single();
 
-        if (pollError) {
-          throw new Error(pollError.message);
-        }
-        if (!pollData) {
-          throw new Error("Poll not found.");
-        }
+        if (pollError) throw new Error(pollError.message);
+        if (!pollData) throw new Error("Poll not found.");
         setPoll(pollData);
 
-        // Fetch options for the poll
+        // Fetch options
         const { data: optionsData, error: optionsError } = await supabase
           .from("options")
           .select("*")
           .eq("poll_id", id)
-          .order("created_at", { ascending: true }); // Or by some order
+          .order("created_at", { ascending: true }); // only works if column exists
 
-        if (optionsError) {
-          throw new Error(optionsError.message);
-        }
+        if (optionsError) throw new Error(optionsError.message);
         setOptions(optionsData || []);
       } catch (err: any) {
         setError(err.message || "Failed to fetch poll.");
-        console.error("Error fetching poll data:", (err as Error).message);
+        console.error("Error fetching poll data:", err.message);
       } finally {
         setLoading(false);
       }
@@ -125,8 +120,6 @@ const PollViewPage: FC<PollPageProps> = ({ params }) => {
     );
   }
 
-  export default PollViewPage;
-
   return (
     <div className="container mx-auto py-8">
       <Card>
@@ -148,7 +141,6 @@ const PollViewPage: FC<PollPageProps> = ({ params }) => {
                 >
                   <span>{option.text}</span>
                   <span className="font-bold">{option.votes} votes</span>
-                  {/* Placeholder for vote button */}
                   <button className="ml-4 px-3 py-1 bg-green-500 text-white text-sm rounded hover:bg-green-600 transition-colors">
                     Vote
                   </button>
@@ -163,3 +155,5 @@ const PollViewPage: FC<PollPageProps> = ({ params }) => {
     </div>
   );
 };
+
+export default PollViewPage;
