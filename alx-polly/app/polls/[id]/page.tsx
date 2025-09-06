@@ -1,5 +1,8 @@
 "use client";
 
+"use client";
+
+import type { PageProps } from "next";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../../lib/supabase";
@@ -19,15 +22,12 @@ interface Option {
   text: string;
   votes: number;
   created_at?: string;
+};
 }
 
 // ✅ Use async function with params typed
-export default function PollViewPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const { id } = params;
+const PollViewPage = ({ params }: PageProps<{ id: string }>) => {
+const { id } = params;
   const [poll, setPoll] = useState<Poll | null>(null);
   const [options, setOptions] = useState<Option[]>([]);
   const [loading, setLoading] = useState(true);
@@ -151,4 +151,4 @@ export default function PollViewPage({
       </Card>
     </div>
   );
-}
+};
