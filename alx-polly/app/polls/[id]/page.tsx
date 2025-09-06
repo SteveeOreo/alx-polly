@@ -1,10 +1,14 @@
-"use client";
-
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../../lib/supabase"; // Adjust path as necessary
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+
+interface PollPageProps {
+  params: {
+    id: string;
+  };
+}
 
 interface Poll {
   id: string;
@@ -20,7 +24,7 @@ interface Option {
   votes: number;
 }
 
-export default function PollViewPage({ params }: { params: { id: string } }) {
+const PollViewPage: FC<PollPageProps> = ({ params }) => {
   const { id } = params;
   const [poll, setPoll] = useState<Poll | null>(null);
   const [options, setOptions] = useState<Option[]>([]);
@@ -116,10 +120,12 @@ export default function PollViewPage({ params }: { params: { id: string } }) {
               Back to Polls
             </button>
           </CardContent>
-        </Card>
-      </div>
-    );
-  }
+              </Card>
+            </div>
+          );
+        };
+
+        export default PollViewPage;
 
   return (
     <div className="container mx-auto py-8">
